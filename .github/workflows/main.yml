@@ -15,9 +15,11 @@ jobs:
       - name: Install unzip
         run: sudo apt-get install unzip -y
 
-      - name: Unzip project
+      - name: Find and unzip project
         run: |
-          unzip CinemaBrtv.zip
+          ZIP_FILE=$(ls *.zip | head -n 1)
+          echo "Using ZIP: $ZIP_FILE"
+          unzip "$ZIP_FILE"
           PROJECT_DIR=$(find . -name gradlew -type f | sed 's|/gradlew||')
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
 
