@@ -1,4 +1,4 @@
-name: Build APK Cinema BRtv (ZIP)
+name: Build APK Cinema BRtv
 
 on:
   push:
@@ -16,24 +16,27 @@ jobs:
         run: sudo apt-get install unzip -y
 
       - name: Unzip project
-        run: unzip "CinemaBRtv_Android_Project (1).zip" -d project
+        run: |
+          unzip "CinemaBRtv_Android_Project (1).zip"
+          PROJECT_DIR=$(ls -d */ | head -n 1)
+          echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
       - name: Grant Gradle permission
-        run: chmod +x project/gradlew
+        run: chmod +x $PROJECT_DIR/gradlew
 
       - name: Build Debug APK
         run: |
-          cd project
+          cd $PROJECT_DIR
           ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: CinemaBRtv-APK
-          path: project/app/build/outputs/apk/debug/app-debug.apk
+          path: ${{ env.PROJECT_DIR }}/app/build/outputs/apk/debug/app-debug.apk
