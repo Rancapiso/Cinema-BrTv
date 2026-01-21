@@ -18,7 +18,7 @@ jobs:
       - name: Unzip project
         run: |
           unzip "CinemaBRtv_Android_Project (1).zip"
-          PROJECT_DIR=$(ls -d */ | head -n 1)
+          PROJECT_DIR=$(find . -name gradlew -type f | sed 's|/gradlew||')
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
 
       - name: Set up JDK 17
